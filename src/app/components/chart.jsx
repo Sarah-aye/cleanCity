@@ -10,7 +10,7 @@ import {
 import { Card } from "react-bootstrap";
 import { categories } from "../data/wasteCategories";
 
-export default function ({ logs }) {
+export default function Chart({ logs }) {
   const data = categories.map((category) => ({
     category,
     total: logs
