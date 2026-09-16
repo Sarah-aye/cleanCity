@@ -1,12 +1,13 @@
 import { useMemo } from "react";
 import { useLocalStorage } from "./useLocalStorage";
+import { makeId } from "../utils/makeId";
 
 export function usePledges() {
-  const [pledges, setPladges] = useLocalStorage("cleancity-pledges", []);
+  const [pledges, setPledges] = useLocalStorage("cleancity-pledges", []);
 
   const addPledges = (text) => {
-    setPladges((current) => [
-      { id: makeId(), text, createdAt: new Date.toISOString() },
+    setPledges((current) => [
+      { id: makeId(), text, createdAt: new Date().toISOString() },
       ...current,
     ]);
   };

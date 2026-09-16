@@ -1,10 +1,11 @@
 import { useMemo, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import { categories } from "../data/wasteCategories";
-const makeId = () =>
-  typeof crypto !== "undefined" && crypto.randomUUID()
-    ? makeId()
-    : `${Date.now()}-${Math.random()}`;
+import { makeId } from "../utils/makeId";
+// const makeId = () =>
+//   typeof crypto !== "undefined" && crypto.randomUUID()
+//     ? makeId()
+//     : `${Date.now()}-${Math.random()}`;
 
 export function useRecyclingLog(initialEntries = []) {
   const [logs, setLogs] = useLocalStorage(
@@ -14,7 +15,7 @@ export function useRecyclingLog(initialEntries = []) {
   const [searchTerm, setSearchTerm] = useState("");
   const [sortBy, setSortBy] = useState("desc-date");
 
-  const addEntry = ({ categories, quantity }) => {
+  const addEntry = ({ quantity }) => {
     setLogs((current) => [
       ...current,
       { id: makeId(), categories, quantity, createdAt: new Date.toISOString() },
