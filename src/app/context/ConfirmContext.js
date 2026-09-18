@@ -6,16 +6,21 @@ const ConfirmContext = createContext();
 
 export function ConfirmProvider({ children }) {
   const [show, setShow] = useState(false);
+  const [dialogConfig, setDialogConfig] = useState({ title: "", message: "" });
   const [onConfirm, setOnConfirm] = useState(null);
 
-  const confirm = (callBack) => {
+  // Pass options object: confirm({ title, message, onConfirm })
+  const confirm = ({ title, message, onConfirm: callBack }) => {
+    setDialogConfig({ title, message });
     setOnConfirm(() => callBack);
     setShow(true);
   };
+
   const close = () => {
     setShow(false);
     setOnConfirm(null);
   };
+
   const accept = () => {
     if (onConfirm) {
       onConfirm();
@@ -30,6 +35,8 @@ export function ConfirmProvider({ children }) {
         confirm,
         close,
         accept,
+        title: dialogConfig.title,
+        message: dialogConfig.message,
       }}
     >
       {children}

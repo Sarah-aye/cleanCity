@@ -3,6 +3,7 @@ import "./globals.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { ConfirmProvider } from "./context/ConfirmContext";
+import ConfirmDialog from "./components/ConfirmDialog";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,7 +27,10 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <ConfirmProvider>{children}</ConfirmProvider>
+        <ConfirmProvider>
+          {children}
+          <ConfirmDialog />
+        </ConfirmProvider>
       </body>
     </html>
   );

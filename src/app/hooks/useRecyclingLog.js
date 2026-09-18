@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
-import { categories } from "../data/wasteCategories";
+
 import { makeId } from "../utils/makeId";
 
 export function useRecyclingLog(initialEntries = []) {
@@ -12,7 +12,7 @@ export function useRecyclingLog(initialEntries = []) {
   );
 
   const [searchTerm, setSearchTerm] = useState("");
-  const [sortBy, setSortBy] = useState("desc-date");
+  const [sortBy, setSortBy] = useState("date-desc");
 
   const addEntry = ({ category, quantity }) => {
     setLogs((current) => [
@@ -28,44 +28,52 @@ export function useRecyclingLog(initialEntries = []) {
     // console.log("logs is: ", logs);
   };
 
-  const editEntry = (id, updates) => {
-    setLogs((current) =>
-      current.map((entry) =>
-        entry.id === id ? { ...entry, ...updates } : entry,
-      ),
-    );
+  const editEntry = (idOrLog, updates) => {
+    setLogs((currentLogs) => {
+      // Make sure we have an array to work with
+      const list = Array.isArray(currentLogs) ? currentLogs : [];
+
+      // If passed an object: editEntry(updatedLogObject)
+      if (typeof idOrLog === "object" && idOrLog !== null && idOrLog.id) {
+        return list.map((item) =>
+          item.id === idOrLog.id ? { ...item, ...idOrLog } : item,
+        );
+      }
+
+      // If passed ID and updates object: editEntry(id, updates)
+      return list.map((item) =>
+        item.id === idOrLog ? { ...item, ...updates } : item,
+      );
+    });
   };
 
   const deleteEntry = (id) =>
-    setLogs((current) => current.filtter((entry) => entry.id !== id));
+    setLogs((current) => current.filter((log) => log.id !== id));
 
   const filteredAndSortedLogs = useMemo(() => {
-    // const logs = Array.isArray(log) ? log : [];
-    const term = searchTerm.trim().toLocaleLowerCase();
-
-    // if (Array.isArray(logs)) {
-    //   console.log("true logs");
-    // } else {
-    //   throw new Error("logs is not an array", logs);
-    // }
+    const safeLogs = Array.isArray(logs) ? logs : [];
+    const term = searchTerm.trim().toLowerCase();
 
     const filtered = term
-      ? logs.filter((entry) => entry.category.toLowerCase().includes(term))
-      : Array.from(logs);
+      ? safeLogs.filter((log) => log.category?.toLowerCase().includes(term))
+      : [...safeLogs];
 
     return filtered.sort((a, b) => {
+      const catA = a.category ?? "";
+      const catB = b.category ?? "";
+
       switch (sortBy) {
         case "category-asc":
-          return a.category.localCompare(b.category);
+          return catA.localeCompare(catB);
         case "category-desc":
-          return b.category.localCompare(a.category);
+          return catB.localeCompare(catA);
         case "quantity-asc":
-          return a.quantity - b.quantity;
+          return (a.quantity || 0) - (b.quantity || 0);
         case "quantity-desc":
-          return b.quantity - a.quantity;
+          return (b.quantity || 0) - (a.quantity || 0);
         case "date-desc":
         default:
-          return new Date(b.createdAt) - new Date(a.createdAt);
+          return new Date(b.createdAt || 0) - new Date(a.createdAt || 0);
       }
     });
   }, [logs, searchTerm, sortBy]);

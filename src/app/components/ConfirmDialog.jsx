@@ -3,8 +3,8 @@
 import { Button, Modal } from "react-bootstrap";
 import { useConfirm } from "../context/ConfirmContext";
 
-export default function ConfirmDialog({ title, message }) {
-  const { show, close, accept } = useConfirm();
+export default function ConfirmDialog() {
+  const { show, close, accept, title, message } = useConfirm();
 
   return (
     <Modal
@@ -14,10 +14,12 @@ export default function ConfirmDialog({ title, message }) {
       aria-labelledby="confirm-dialog-title"
     >
       <Modal.Header closeButton>
-        <Modal.Title id="confirm-dialog-title">{title}</Modal.Title>
+        <Modal.Title id="confirm-dialog-title">
+          {title || "Confirm Action"}
+        </Modal.Title>
       </Modal.Header>
 
-      <Modal.Body>{message}</Modal.Body>
+      <Modal.Body>{message || "Are you sure you want to proceed?"}</Modal.Body>
 
       <Modal.Footer>
         <Button variant="outline-secondary" onClick={close}>

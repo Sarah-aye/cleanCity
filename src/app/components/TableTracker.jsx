@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Button, Form, Table } from "react-bootstrap";
+import { Button, Form, Table, Modal } from "react-bootstrap";
 import ConfirmDialog from "./ConfirmDialog";
 import { useRecyclingLog } from "../hooks/useRecyclingLog";
+import { categories } from "../data/wasteCategories";
+import { useConfirm } from "../context/ConfirmContext";
 
 export default function TrackerTable() {
   const {
@@ -14,8 +16,42 @@ export default function TrackerTable() {
     setSortBy,
     editEntry,
     deleteEntry,
+    filteredAndSortedLogs,
   } = useRecyclingLog();
+
+  const { confirm } = useConfirm();
+
   const [pendingDelete, setPendingDelete] = useState(null);
+
+  const [editingId, setEditingId] = useState(null);
+  const [editCategory, setEditCategory] = useState("");
+  const [editQuantity, setEditQuantity] = useState("");
+
+  const handleStartEdit = (log) => {
+    setEditingId(log.id);
+    setEditCategory(log.category);
+    setEditQuantity(log.quantity);
+  };
+
+  const handleSaveEdit = (id) => {
+    editEntry(id, {
+      category: editCategory,
+      quantity: Number(editQuantity),
+    });
+    setEditingId(null);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingId(null);
+  };
+
+  const handleDelete = (log) => {
+    confirm({
+      title: "Delete recycling log?",
+      message: `Remove the ${log.quantity} ${log.category} item(s) from your tracker?`,
+      onConfirm: () => deleteEntry(log.id),
+    });
+  };
 
   return (
     <>
@@ -45,7 +81,7 @@ export default function TrackerTable() {
         </Form.Select>
       </div>
 
-      {logs.length === 0 ? (
+      {filteredAndSortedLogs.length === 0 ? (
         <div className="empty-state text-center py-5">
           <div className="empty-icon">♻</div>
           <h3 className="h5">No recycling logs yet</h3>
@@ -65,42 +101,77 @@ export default function TrackerTable() {
               </tr>
             </thead>
             <tbody>
-              {logs.map((log) => (
+              {filteredAndSortedLogs.map((log) => (
                 <tr key={log.id}>
-                  <td className="fw-semibold">{log.category}</td>
-                  <td>{log.quantity}</td>
-                  <td>{new Date(log.createdAt).toLocaleDateString()}</td>
-                  <td className="text-end">
-                    <div className="d-flex justify-content-end gap-1">
-                      <Button
-                        size="sm"
-                        variant="outline-secondary"
-                        onClick={() => editEntry(log)}
-                      >
-                        Edit
-                      </Button>
-                      <ConfirmDialog
-                        title="Delete recycling log?"
-                        message={`Remove the ${log.quantity} ${log.category} item(s) from your tracker?`}
-                        render={(confirm) => (
+                  {editingId === log.id ? (
+                    <>
+                      <td>
+                        <Form.Select
+                          size="sm"
+                          value={editCategory}
+                          onChange={(e) => setEditCategory(e.target.value)}
+                          aria-label="Select category"
+                        >
+                          {categories.map((category) => (
+                            <option key={category} value={category}>
+                              {category}
+                            </option>
+                          ))}
+                        </Form.Select>
+                      </td>
+                      <td>
+                        <Form.Control
+                          size="sm"
+                          type="number"
+                          value={editQuantity}
+                          onChange={(e) => setEditQuantity(e.target.value)}
+                        />
+                      </td>
+                      <td>{new Date(log.createdAt).toLocaleDateString()}</td>
+                      <td className="text-end">
+                        <div className="d-flex justify-content-end gap-1">
+                          <Button
+                            size="sm"
+                            variant="success"
+                            onClick={() => handleSaveEdit(log.id)}
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            size="sm"
+                            variant="outline-secondary"
+                            onClick={handleCancelEdit}
+                          >
+                            Cancel
+                          </Button>
+                        </div>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="fw-semibold">{log.category}</td>
+                      <td>{log.quantity}</td>
+                      <td>{new Date(log.createdAt).toLocaleDateString()}</td>
+                      <td className="text-end">
+                        <div className="d-flex justify-content-end gap-1">
+                          <Button
+                            size="sm"
+                            variant="outline-secondary"
+                            onClick={() => handleStartEdit(log)}
+                          >
+                            Edit
+                          </Button>
                           <Button
                             size="sm"
                             variant="outline-danger"
-                            onClick={() => {
-                              setPendingDelete(log);
-                              confirm();
-                            }}
+                            onClick={() => handleDelete(log)}
                           >
                             Delete
                           </Button>
-                        )}
-                        onConfirm={() => {
-                          if (pendingDelete) deleteEntry(pendingDelete.id);
-                          setPendingDelete(null);
-                        }}
-                      />
-                    </div>
-                  </td>
+                        </div>
+                      </td>
+                    </>
+                  )}
                 </tr>
               ))}
             </tbody>
