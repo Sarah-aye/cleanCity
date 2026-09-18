@@ -15,17 +15,41 @@ export function useRecyclingLog(initialEntries = []) {
   const [sortBy, setSortBy] = useState("date-desc");
 
   const addEntry = ({ category, quantity }) => {
-    setLogs((current) => [
-      ...current,
-      {
-        id: makeId(),
-        category,
-        quantity,
-        createdAt: new Date().toISOString(),
-      },
-    ]);
+    const numQty = Number(quantity) || 0;
+    const targetCategory = category ? category.trim().toLowerCase() : "";
 
-    // console.log("logs is: ", logs);
+    setLogs((current) => {
+      const safeLogs = Array.isArray(current) ? current : [];
+
+      const existingIndex = safeLogs.findIndex(
+        (log) => log.category?.trim().toLowerCase() === targetCategory,
+      );
+
+      if (existingIndex !== -1) {
+        // Update existing category entry
+        return safeLogs.map((item, index) => {
+          if (index === existingIndex) {
+            return {
+              ...item,
+              quantity: (Number(item.quantity) || 0) + numQty,
+              createdAt: new Date().toISOString(), //  reflect latest log
+            };
+          }
+          return item;
+        });
+      }
+
+      // Append new category entry if it doesn't exist yet
+      return [
+        ...safeLogs,
+        {
+          id: makeId(),
+          category,
+          quantity: numQty,
+          createdAt: new Date().toISOString(),
+        },
+      ];
+    });
   };
 
   const editEntry = (idOrLog, updates) => {
@@ -33,14 +57,13 @@ export function useRecyclingLog(initialEntries = []) {
       // Make sure we have an array to work with
       const list = Array.isArray(currentLogs) ? currentLogs : [];
 
-      // If passed an object: editEntry(updatedLogObject)
+      // If passed an object
       if (typeof idOrLog === "object" && idOrLog !== null && idOrLog.id) {
         return list.map((item) =>
           item.id === idOrLog.id ? { ...item, ...idOrLog } : item,
         );
       }
 
-      // If passed ID and updates object: editEntry(id, updates)
       return list.map((item) =>
         item.id === idOrLog ? { ...item, ...updates } : item,
       );
@@ -99,6 +122,44 @@ export function useRecyclingLog(initialEntries = []) {
     }, {});
   }, [logs]);
 
+  // export to csv feature
+
+  const exportToCSV = () => {
+    const safeLogs = Array.isArray(logs) ? logs : [];
+    if (safeLogs.length === 0) return;
+
+    // Define CSV headers
+    const headers = ["Category", "Quantity", "Date Created"];
+
+    // Format log rows (escape quotes and format dates)
+    const rows = safeLogs.map((log) => [
+      `"${(log.category || "").replace(/"/g, '""')}"`, // Handle potential commas/quotes
+      log.quantity || 0,
+      `"${new Date(log.createdAt).toLocaleDateString()}"`,
+    ]);
+
+    // Combine headers and rows into CSV content
+    const csvContent = [
+      headers.join(","),
+      ...rows.map((row) => row.join(",")),
+    ].join("\n");
+
+    // Create a Blob and trigger a download link
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+
+    link.setAttribute("href", url);
+    link.setAttribute(
+      "download",
+      `cleancity_recycling_log_${new Date().toISOString().slice(0, 10)}.csv`,
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
   return {
     logs,
     addEntry,
@@ -111,5 +172,6 @@ export function useRecyclingLog(initialEntries = []) {
     filteredAndSortedLogs,
     totalQuantity,
     categoryTotals,
+    exportToCSV,
   };
 }

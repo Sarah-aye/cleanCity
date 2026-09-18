@@ -25,6 +25,14 @@ body {
     "Segoe UI",
     sans-serif;
 }
+
+.brand-color {
+  color: var(--accent) !important;
+}
+
+.custom-bg {
+  background: var(--accent) !important;
+}
 .site-nav {
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px);

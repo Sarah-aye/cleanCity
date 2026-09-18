@@ -62,7 +62,7 @@ export default function Home() {
             recycled item.
           </p>
         </div>
-        <Row className="g-3">
+        <Row className="g-4">
           {wasteCategories.map((category) => {
             // 1. Get the lookup key for the category name
             const categoryKey = category.name
@@ -73,8 +73,15 @@ export default function Home() {
             const categoryCount = Number(categoryTotals[categoryKey]) || 0;
 
             return (
-              <Col key={category.id} xs={12} sm={6} lg={4}>
+              <Col
+                key={category.id}
+                xs={12}
+                sm={6}
+                lg={4}
+                className="g-3 g-md-4"
+              >
                 <BadgeCategoryCard
+                  className="g-3 g-md-4"
                   category={category.name}
                   total={categoryCount}
                   icon={category.icon}

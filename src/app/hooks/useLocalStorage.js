@@ -24,10 +24,24 @@ export function useLocalStorage(key, initialValue) {
 
   const [value, setInternalValue] = useState(() => JSON.parse(store));
 
-  // Sync internal state if localStorage changes
+  // Sync internal state if localStorage changes across tabs/events
   useEffect(() => {
     setInternalValue(JSON.parse(store));
   }, [store]);
+
+  // Handle Dark Mode DOM updates when managing key === "theme"
+  useEffect(() => {
+    if (typeof window === "undefined" || key !== "theme") return;
+
+    const root = document.documentElement;
+    const isDark = value === "dark";
+
+    // Standard CSS class strategy (.dark)
+    root.classList.toggle("dark", isDark);
+
+    // Bootstrap 5 / React-Bootstrap attribute strategy
+    root.setAttribute("data-bs-theme", isDark ? "dark" : "light");
+  }, [key, value]);
 
   const setValue = useCallback(
     (newValue) => {

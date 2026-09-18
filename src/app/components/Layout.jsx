@@ -5,7 +5,7 @@ export default function Layout({ children }) {
     <>
       <Navbar />
       <main>{children}</main>
-      <footer className="site-footer">
+      <footer className="site-footer bg-body-tertiary">
         <div className="container d-flex flex-column flex-md-row justify-content-between gap-2">
           <span>CleanCity+ © 2026</span>
           <span>Track something that matters.</span>

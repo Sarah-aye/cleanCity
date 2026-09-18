@@ -12,7 +12,7 @@ export default function TrackerTable() {
     setSearchTerm,
     sortBy,
     setSortBy,
-
+    exportToCSV,
     filteredAndSortedLogs,
   } = useRecyclingLog();
 
@@ -54,6 +54,15 @@ export default function TrackerTable() {
           <option value="quantity-asc">Quantity low–high</option>
           <option value="quantity-desc">Quantity high–low</option>
         </Form.Select>
+        <Button
+          variant="outline-success"
+          onClick={exportToCSV}
+          disabled={filteredAndSortedLogs.length === 0}
+          className="d-flex align-items-center gap-1 text-nowrap"
+          suppressHydrationWarning
+        >
+          📥 Export CSV
+        </Button>
       </div>
 
       {filteredAndSortedLogs.length === 0 ? (
