@@ -4,12 +4,13 @@ import { usePledgeForm } from "../hooks/usePledgeForm";
 import { Button, Card, Form } from "react-bootstrap";
 
 export default function PledgeForm({ onSubmit }) {
-  const { text, error, submit, setText, maxLength } = usePledgeForm(onSubmit);
+  const { text, error, setText, MAX_LENGTH, handleSubmit } =
+    usePledgeForm(onSubmit);
 
   return (
     <Card className="border-0 shadow-sm">
       <Card.Body className="p-4">
-        <Form onSubmit={submit} noValidate>
+        <Form onSubmit={handleSubmit} noValidate>
           <Form.Group controlId="pledge-text">
             <Form.Label>Your pledge</Form.Label>
             <Form.Control

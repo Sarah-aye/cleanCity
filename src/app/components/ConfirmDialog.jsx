@@ -4,7 +4,16 @@ import { Button, Modal } from "react-bootstrap";
 import { useConfirm } from "../context/ConfirmContext";
 
 export default function ConfirmDialog() {
-  const { show, close, accept, title, message } = useConfirm();
+  const {
+    show,
+    close,
+    accept,
+    title,
+    message,
+    confirmText,
+    cancelText,
+    variant,
+  } = useConfirm();
 
   return (
     <Modal
@@ -23,11 +32,11 @@ export default function ConfirmDialog() {
 
       <Modal.Footer>
         <Button variant="outline-secondary" onClick={close}>
-          Cancel
+          {cancelText}
         </Button>
 
-        <Button variant="danger" onClick={accept}>
-          Confirm delete
+        <Button variant={variant} onClick={accept}>
+          {confirmText}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -7,7 +7,7 @@ import PledgeList from "../components/PledgeList";
 import PledgeForm from "../components/PledgeForm";
 
 export default function Pledge() {
-  const { pledges, addPledges, pledgeCount, message, clearMessage } =
+  const { pledges, addPledge, pledgeCount, message, clearMessage } =
     usePledges();
 
   return (

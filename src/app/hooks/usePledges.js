@@ -8,7 +8,7 @@ export function usePledges() {
   const [pledges, setPledges] = useLocalStorage("cleancity-pledges", []);
   const [message, setMessage] = useState("");
 
-  const addPledges = (text) => {
+  const addPledge = (text) => {
     setPledges((current) => [
       { id: makeId(), text, createdAt: new Date().toISOString() },
       ...current,
@@ -23,5 +23,5 @@ export function usePledges() {
 
   const pledgeCount = useMemo(() => pledges.length, [pledges]);
 
-  return { pledges, addPledges, pledgeCount, message, clearMessage };
+  return { pledges, addPledge, pledgeCount, message, clearMessage };
 }
