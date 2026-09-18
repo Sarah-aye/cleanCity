@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import { Container, Row, Col, Badge as BsBadge } from "react-bootstrap";
 
@@ -9,10 +11,12 @@ import CategorySummeryCard from "./components/categorySummeryCard";
 import withBadge from "./hocs/withBadge";
 
 import { wasteCategories } from "./data/wasteCategories";
+import { useRecyclingLog } from "./hooks/useRecyclingLog";
 
 const BadgeCategoryCard = withBadge(CategorySummeryCard);
 
 export default function Home() {
+  const { categoryTotals } = useRecyclingLog();
   return (
     <Layout>
       <section className="hero-section">
@@ -59,15 +63,25 @@ export default function Home() {
           </p>
         </div>
         <Row className="g-3">
-          {wasteCategories.map((category) => (
-            <Col key={category.id} xs={12} sm={6} lg={4}>
-              <BadgeCategoryCard
-                category={category.name}
-                total={0}
-                icon={category.icon}
-              />
-            </Col>
-          ))}
+          {wasteCategories.map((category) => {
+            // 1. Get the lookup key for the category name
+            const categoryKey = category.name
+              ? category.name.trim().toLowerCase()
+              : "";
+
+            // 2. Extract ONLY the numeric value for this specific category
+            const categoryCount = Number(categoryTotals[categoryKey]) || 0;
+
+            return (
+              <Col key={category.id} xs={12} sm={6} lg={4}>
+                <BadgeCategoryCard
+                  category={category.name}
+                  total={categoryCount}
+                  icon={category.icon}
+                />
+              </Col>
+            );
+          })}
         </Row>
       </Container>
     </Layout>

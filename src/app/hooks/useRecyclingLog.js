@@ -78,6 +78,27 @@ export function useRecyclingLog(initialEntries = []) {
     });
   }, [logs, searchTerm, sortBy]);
 
+  const totalQuantity = useMemo(() => {
+    return filteredAndSortedLogs.reduce(
+      (sum, log) => sum + (Number(log.quantity) || 0),
+      0,
+    );
+  }, [filteredAndSortedLogs]);
+
+  const categoryTotals = useMemo(() => {
+    const safeLogs = Array.isArray(logs) ? logs : [];
+    return safeLogs.reduce((acc, log) => {
+      // Normalizing category name to avoid case mismatch (e.g., "Plastic" vs "plastic")
+      const key = log.category ? log.category.trim().toLowerCase() : "";
+      const qty = Number(log.quantity) || 0;
+
+      if (key) {
+        acc[key] = (acc[key] || 0) + qty;
+      }
+      return acc;
+    }, {});
+  }, [logs]);
+
   return {
     logs,
     addEntry,
@@ -88,5 +109,7 @@ export function useRecyclingLog(initialEntries = []) {
     sortBy,
     setSortBy,
     filteredAndSortedLogs,
+    totalQuantity,
+    categoryTotals,
   };
 }

@@ -1,57 +1,31 @@
 "use client";
 
-import { useState } from "react";
-import { Button, Form, Table, Modal } from "react-bootstrap";
-import ConfirmDialog from "./ConfirmDialog";
+import { Button, Form, Table } from "react-bootstrap";
+
 import { useRecyclingLog } from "../hooks/useRecyclingLog";
 import { categories } from "../data/wasteCategories";
-import { useConfirm } from "../context/ConfirmContext";
 
 export default function TrackerTable() {
   const {
-    logs,
     searchTerm,
     setSearchTerm,
     sortBy,
     setSortBy,
-    editEntry,
-    deleteEntry,
+
     filteredAndSortedLogs,
   } = useRecyclingLog();
 
-  const { confirm } = useConfirm();
-
-  const [pendingDelete, setPendingDelete] = useState(null);
-
-  const [editingId, setEditingId] = useState(null);
-  const [editCategory, setEditCategory] = useState("");
-  const [editQuantity, setEditQuantity] = useState("");
-
-  const handleStartEdit = (log) => {
-    setEditingId(log.id);
-    setEditCategory(log.category);
-    setEditQuantity(log.quantity);
-  };
-
-  const handleSaveEdit = (id) => {
-    editEntry(id, {
-      category: editCategory,
-      quantity: Number(editQuantity),
-    });
-    setEditingId(null);
-  };
-
-  const handleCancelEdit = () => {
-    setEditingId(null);
-  };
-
-  const handleDelete = (log) => {
-    confirm({
-      title: "Delete recycling log?",
-      message: `Remove the ${log.quantity} ${log.category} item(s) from your tracker?`,
-      onConfirm: () => deleteEntry(log.id),
-    });
-  };
+  const {
+    editingId,
+    editCategory,
+    setEditCategory,
+    editQuantity,
+    setEditQuantity,
+    handleStartEdit,
+    handleSaveEdit,
+    handleCancelEdit,
+    handleDelete,
+  } = useTrackerTableActions();
 
   return (
     <>
