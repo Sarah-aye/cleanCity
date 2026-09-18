@@ -3,6 +3,7 @@
 import { Button, Card, Form } from "react-bootstrap";
 import { categories } from "../data/wasteCategories";
 import { useTrackerForm } from "../hooks/useTrackerForm";
+import { usePledgeForm } from "../hooks/usePledgeForm";
 
 export default function TrackerForm({ onSubmit, initialValue, onCancel }) {
   const { category, setCategory, quantity, setQuantity, errors, submit } =
@@ -12,6 +13,8 @@ export default function TrackerForm({ onSubmit, initialValue, onCancel }) {
     });
 
   const isEditing = Boolean(initialValue);
+
+  const { handleKeyDown } = usePledgeForm(onSubmit);
 
   return (
     <Card className="border-0 shadow-sm h-100">
@@ -27,6 +30,8 @@ export default function TrackerForm({ onSubmit, initialValue, onCancel }) {
             </h2>
           </div>
         </div>
+
+        {/* hjkkk */}
 
         <Form onSubmit={submit} noValidate>
           <Form.Group className="mb-3" controlId="tracker-category">
@@ -63,6 +68,7 @@ export default function TrackerForm({ onSubmit, initialValue, onCancel }) {
               value={quantity}
               onChange={(e) => setQuantity(e.target.value)}
               aria-describedby={errors.quantity ? "quantity-error" : undefined}
+              onKeyDown={handleKeyDown}
             />
 
             {errors.quantity && (

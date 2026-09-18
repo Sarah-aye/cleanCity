@@ -19,14 +19,19 @@ export default function WasteCategories() {
             streams.
           </p>
         </div>
-        <Accordion alwaysOpen>
+        <Accordion alwaysOpen defaultActiveKey={["0"]}>
           {wasteCategories.map((item, index) => (
             <Accordion.Item eventKey={String(index)} key={item.id}>
-              <Accordion.Header>
-                <span className="category-icon me-3">{item.icon}</span>
+              <Accordion.Header id={`heading-${item.id}`}>
+                <span className="category-icon me-3" aria-hidden="true">
+                  {item.icon}
+                </span>
                 <span className="fw-semibold">{item.name}</span>
               </Accordion.Header>
-              <Accordion.Body>
+              <Accordion.Body
+                role="region"
+                aria-labelledby={`heading-${item.id}`}
+              >
                 <RowContent item={item} />
               </Accordion.Body>
             </Accordion.Item>

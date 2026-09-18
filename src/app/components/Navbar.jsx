@@ -12,8 +12,8 @@ export default function Navbar() {
   return (
     <BsNavbar expand="lg" sticky="top" className="site-nav bg-body-tertiary">
       <Container>
-        <BsNavbar.Brand as={Link} href="/" className="fw-bold brand-mark ">
-          <span className="brand-dot ">+</span>
+        <BsNavbar.Brand as={Link} href="/" className="fw-bold brand-mark">
+          <span className="brand-dot">+</span>
           <span className="brand-color">CleanCity</span>
         </BsNavbar.Brand>
         <BsNavbar.Toggle
@@ -26,6 +26,7 @@ export default function Navbar() {
               as={Link}
               href="/"
               active={isActive("/")}
+              aria-current={isActive("/") ? "page" : undefined}
               className={isActive("/") ? "fw-bold text-tertiary" : ""}
             >
               Home
@@ -34,6 +35,7 @@ export default function Navbar() {
               as={Link}
               href="/waste-categories"
               active={isActive("/waste-categories")}
+              aria-current={isActive("/waste-categories") ? "page" : undefined}
               className={
                 isActive("/waste-categories") ? "fw-bold text-tertiary" : ""
               }
@@ -44,6 +46,7 @@ export default function Navbar() {
               as={Link}
               href="/recycling-tracker"
               active={isActive("/recycling-tracker")}
+              aria-current={isActive("/recycling-tracker") ? "page" : undefined}
               className={
                 isActive("/recycling-tracker") ? "fw-bold text-tertiary" : ""
               }
@@ -54,6 +57,7 @@ export default function Navbar() {
               as={Link}
               href="/pledge"
               active={isActive("/pledge")}
+              aria-current={isActive("/pledge") ? "page" : undefined}
               className={isActive("/pledge") ? "fw-bold text-tertiary" : ""}
             >
               Pledge

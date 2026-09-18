@@ -13,6 +13,8 @@ export default function ConfirmDialog() {
     confirmText,
     cancelText,
     variant,
+    cancelButtonRef,
+    confirmButtonRef,
   } = useConfirm();
 
   return (
@@ -31,11 +33,15 @@ export default function ConfirmDialog() {
       <Modal.Body>{message || "Are you sure you want to proceed?"}</Modal.Body>
 
       <Modal.Footer>
-        <Button variant="outline-secondary" onClick={close}>
+        <Button
+          variant="outline-secondary"
+          onClick={close}
+          ref={cancelButtonRef}
+        >
           {cancelText}
         </Button>
 
-        <Button variant={variant} onClick={accept}>
+        <Button variant={variant} onClick={accept} ref={confirmButtonRef}>
           {confirmText}
         </Button>
       </Modal.Footer>

@@ -4,7 +4,7 @@ import { usePledgeForm } from "../hooks/usePledgeForm";
 import { Button, Card, Form } from "react-bootstrap";
 
 export default function PledgeForm({ onSubmit }) {
-  const { text, error, setText, MAX_LENGTH, handleSubmit } =
+  const { text, error, setText, MAX_LENGTH, handleSubmit, handleKeyDown } =
     usePledgeForm(onSubmit);
 
   return (
@@ -21,6 +21,7 @@ export default function PledgeForm({ onSubmit }) {
               onChange={(e) => setText(e.target.value)}
               placeholder="This week I will…"
               aria-describedby="pledge-count pledge-error"
+              onKeyDown={handleKeyDown}
             />
             <div id="pledge-count" className="text-end small text-muted mt-1">
               {text.length}/{MAX_LENGTH}

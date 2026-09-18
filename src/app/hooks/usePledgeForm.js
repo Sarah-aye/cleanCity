@@ -49,11 +49,19 @@ export function usePledgeForm(onSubmit) {
     });
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSubmit(e);
+    }
+  };
+
   return {
     text,
     error,
     handleSubmit,
     setText,
     MAX_LENGTH,
+    handleKeyDown,
   };
 }

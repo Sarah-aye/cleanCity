@@ -1,6 +1,6 @@
 "use client";
 
-import { useContext, createContext, useState } from "react";
+import { useContext, createContext, useState, useRef, useEffect } from "react";
 
 const ConfirmContext = createContext();
 
@@ -14,6 +14,9 @@ export function ConfirmProvider({ children }) {
     variant: "primary",
   });
   const [onConfirm, setOnConfirm] = useState(null);
+
+  const cancelButtonRef = useRef(null);
+  const confirmButtonRef = useRef(null);
 
   const confirm = ({
     title,
@@ -40,6 +43,35 @@ export function ConfirmProvider({ children }) {
     close();
   };
 
+  useEffect(() => {
+    if (!show) return;
+
+    const timer = setTimeout(() => {
+      confirmButtonRef.current?.focus();
+    }, 50);
+
+    const handleWindowKeyDown = (e) => {
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        e.preventDefault();
+        if (document.activeElement === confirmButtonRef.current) {
+          cancelButtonRef.current?.focus();
+        } else {
+          confirmButtonRef.current?.focus();
+        }
+      } else if (e.key === "Enter") {
+        e.preventDefault();
+        accept();
+      }
+    };
+
+    window.addEventListener("keydown", handleWindowKeyDown);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("keydown", handleWindowKeyDown);
+    };
+  }, [show, onConfirm]);
+
   return (
     <ConfirmContext.Provider
       value={{
@@ -48,6 +80,8 @@ export function ConfirmProvider({ children }) {
         close,
         accept,
         ...dialogConfig,
+        cancelButtonRef,
+        confirmButtonRef,
       }}
     >
       {children}
