@@ -1,3 +1,5 @@
+"use client";
+
 import {
   ResponsiveContainer,
   BarChart,
@@ -10,14 +12,14 @@ import {
 import { Card } from "react-bootstrap";
 import { categories } from "../data/wasteCategories";
 
-export default function Chart({ logs }) {
+export default function Chart({ logs = [] }) {
   const data = categories.map((category) => ({
     category,
     total: logs
       .filter((log) => log.category === category)
       .reduce((sum, log) => sum + log.quantity, 0),
   }));
-  const hasData = data.some((item) => item > 0);
+  const hasData = data.some((item) => item.total > 0);
 
   return (
     <Card className="border-0 shadow-sm h-100">
@@ -45,7 +47,12 @@ export default function Chart({ logs }) {
                 <XAxis dataKey="category" tick={{ fontSize: 12 }} />
                 <YAxis allowDecimals={false} />
                 <Tooltip />
-                <Bar dataKey="total" name="Items" radius={[6, 6, 0, 0]} />
+                <Bar
+                  dataKey="total"
+                  name="Items"
+                  radius={[6, 6, 0, 0]}
+                  fill="var(--accent)"
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>

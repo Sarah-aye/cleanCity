@@ -1,20 +1,16 @@
 import Link from "next/link";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  Button,
-  Badge as BsBadge,
-} from "react-bootstrap";
-import Layout from "@/components/Layout";
-import FactGenerator from "@/components/FactGenerator";
-import CategorySummaryCard from "@/components/CategorySummaryCard";
-import withBadge from "@/hocs/withBadge";
+import { Container, Row, Col, Badge as BsBadge } from "react-bootstrap";
 
-import { categories } from "./data/wasteCategories";
+import Layout from "./components/Layout";
 
-const BadgeCategoryCard = withBadge(CategorySummaryCard);
+import FactGenerator from "./components/factGenerator";
+
+import CategorySummeryCard from "./components/categorySummeryCard";
+import withBadge from "./hocs/withBadge";
+
+import { wasteCategories } from "./data/wasteCategories";
+
+const BadgeCategoryCard = withBadge(CategorySummeryCard);
 
 export default function Home() {
   return (
@@ -35,22 +31,15 @@ export default function Home() {
                 that turns intention into action.
               </p>
               <div className="d-flex flex-wrap gap-2 mt-4">
-                <Button
-                  as={Link}
+                <Link
                   href="/recycling-tracker"
-                  variant="light"
-                  size="lg"
+                  className="btn btn-light btn-lg"
                 >
                   Start tracking
-                </Button>
-                <Button
-                  as={Link}
-                  href="/waste-categories"
-                  variant="outline-light"
-                  size="lg"
-                >
-                  Learn categories
-                </Button>
+                </Link>
+                <Link href="/waste-categories" className="btn btn-light btn-lg">
+                  Learn Categories
+                </Link>
               </div>
             </Col>
             <Col lg={5}>
@@ -70,7 +59,7 @@ export default function Home() {
           </p>
         </div>
         <Row className="g-3">
-          {categories.map((category) => (
+          {wasteCategories.map((category) => (
             <Col key={category.id} xs={12} sm={6} lg={4}>
               <BadgeCategoryCard
                 category={category.name}

@@ -1,23 +1,51 @@
-import { useState, useEffect } from "react";
+"use client";
+
+import { useState, useEffect, useCallback, useSyncExternalStore } from "react";
+
+function subscribe(callback) {
+  window.addEventListener("storage", callback);
+  return () => window.removeEventListener("storage", callback);
+}
 
 export function useLocalStorage(key, initialValue) {
-  const [value, setValue] = useState(() => {
-    if (typeof window === "undefined") return initialValue;
-
+  // Read value synchronously from localStorage on client, return initialValue on server
+  const getSnapshot = () => {
     try {
-      const stored = window.localStorage.getItem(key);
-      stored === null ? initialValue : JSON.parse(stored);
+      const item = window.localStorage.getItem(key);
+      return item !== null ? item : JSON.stringify(initialValue);
     } catch {
-      return initialValue;
+      return JSON.stringify(initialValue);
     }
-  });
+  };
 
+  const getServerSnapshot = () => JSON.stringify(initialValue);
+
+  const store = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
+  const [value, setInternalValue] = useState(() => JSON.parse(store));
+
+  // Sync internal state if localStorage changes
   useEffect(() => {
-    try {
-      const store = window.localStorage.setItem(key, JSON.parse(value));
-    } catch {
-      // storage can be unavailable in private/restricted browsers
-    }
-  }, [key, value]);
+    setInternalValue(JSON.parse(store));
+  }, [store]);
+
+  const setValue = useCallback(
+    (newValue) => {
+      try {
+        const nextValue =
+          newValue instanceof Function ? newValue(value) : newValue;
+
+        setInternalValue(nextValue);
+        window.localStorage.setItem(key, JSON.stringify(nextValue));
+
+        // Dispatch event to notify useSyncExternalStore in the same tab
+        window.dispatchEvent(new Event("storage"));
+      } catch {
+        // Storage unavailable
+      }
+    },
+    [key, value],
+  );
+
   return [value, setValue];
 }

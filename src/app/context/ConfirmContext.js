@@ -1,8 +1,10 @@
+"use client";
+
 import { useContext, createContext, useState } from "react";
 
 const ConfirmContext = createContext();
 
-export function ContextProvider({ children }) {
+export function ConfirmProvider({ children }) {
   const [show, setShow] = useState(false);
   const [onConfirm, setOnConfirm] = useState(null);
 

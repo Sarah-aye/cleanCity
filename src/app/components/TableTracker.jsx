@@ -1,3 +1,5 @@
+"use client";
+
 import { useState } from "react";
 import { Button, Form, Table } from "react-bootstrap";
 import ConfirmDialog from "./ConfirmDialog";

@@ -1,14 +1,16 @@
+"use client";
+
 import { useState, useEffect } from "react";
 
 export function useTrackerForm({ onSubmit, initialValue }) {
   const [category, setCategory] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [error, setError] = useState({});
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setCategory(initialValue?.category || "");
     setQuantity(initialValue?.quantity?.toString() || "");
-    setError({});
+    setErrors({});
   }, [initialValue]);
 
   const validate = () => {

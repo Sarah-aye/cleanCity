@@ -1,3 +1,5 @@
+"use client";
+
 import { usePledgeForm } from "../hooks/usePledgeForm";
 import { Button, Card, Form } from "react-bootstrap";
 

@@ -9,7 +9,7 @@ import CategorySummeryCard from "../components/categorySummeryCard";
 import withBadge from "../hocs/withBadge";
 import { useRecyclingTracker } from "../hooks/useRecyclingTracker";
 
-const BadgeCategoryCard = withBadge(CategorySummaryCard);
+const BadgeCategoryCard = withBadge(CategorySummeryCard);
 
 export default function RecyclingTracker() {
   const {

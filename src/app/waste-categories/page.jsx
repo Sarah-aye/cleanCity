@@ -1,7 +1,12 @@
+"use client";
+
 import { Accordion, Container, Card } from "react-bootstrap";
-import { categories } from "../data/wasteCategories";
+
+import { wasteCategories } from "../data/wasteCategories";
+
 import Layout from "../components/Layout";
 
+// console.log("type of wastecategories", wasteCategories);
 export default function WasteCategories() {
   return (
     <Layout>
@@ -15,7 +20,7 @@ export default function WasteCategories() {
           </p>
         </div>
         <Accordion alwaysOpen>
-          {categories.map((item, index) => (
+          {wasteCategories.map((item, index) => (
             <Accordion.Item eventKey={String(index)} key={item.id}>
               <Accordion.Header>
                 <span className="category-icon me-3">{item.icon}</span>

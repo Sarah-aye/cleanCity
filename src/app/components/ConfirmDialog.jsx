@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Modal } from "react-bootstrap";
 import { useConfirm } from "../context/ConfirmContext";
 

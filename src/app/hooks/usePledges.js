@@ -1,3 +1,5 @@
+"use client";
+
 import { useMemo, useState } from "react";
 import { useLocalStorage } from "./useLocalStorage";
 import { makeId } from "../utils/makeId";

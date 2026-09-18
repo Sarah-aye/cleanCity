@@ -1,4 +1,4 @@
-import Badge from "@components/Badge.jsx";
+import Badge from "../components/Badge";
 
 export default function withBadge(WrappedComponent) {
   function BadgeWrapper({ total, ...props }) {
