@@ -36,6 +36,7 @@ export default function TrackerForm({ onSubmit, initialValue, onCancel }) {
               value={category}
               onChange={(e) => setCategory(e.target.value)}
               aria-describedby={errors.category ? "category-error" : undefined}
+              suppressHydrationWarning
             >
               <option value="">Choose a category</option>
 

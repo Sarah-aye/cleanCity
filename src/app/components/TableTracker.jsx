@@ -4,6 +4,7 @@ import { Button, Form, Table } from "react-bootstrap";
 
 import { useRecyclingLog } from "../hooks/useRecyclingLog";
 import { categories } from "../data/wasteCategories";
+import { useTrackerTableActions } from "../hooks/useTrackerTableActions";
 
 export default function TrackerTable() {
   const {
