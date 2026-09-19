@@ -15,6 +15,7 @@ export default function ThemeToggle() {
       variant={theme === "dark" ? "outline-light" : "outline-dark"}
       onClick={toggleTheme}
       aria-label="Toggle theme"
+      suppressHydrationWarning
     >
       {theme === "dark" ? "🌙 Dark" : "☀️ Light"}
     </Button>
