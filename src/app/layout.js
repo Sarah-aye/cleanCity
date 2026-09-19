@@ -46,7 +46,7 @@ export default function RootLayout({ children }) {
       <head>
         <meta name="color-scheme" content="light dark" />
       </head>
-      <body className=" bg-dark text-light min-vh-100 flex flex-col">
+      <body className=" bg-body text-body min-vh-100 flex flex-col">
         <ConfirmProvider>
           <PWAWarmCache />
           {children}

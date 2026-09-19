@@ -41,7 +41,7 @@ export default function RecyclingTracker() {
 
         <Row className="g-4 mb-4 ">
           {totals.map((item) => (
-            <Col xs={12} sm={6} lg key={item.category}>
+            <Col xs={12} sm={6} lg key={item.category} className="">
               <BadgeCategoryCard {...item} icon={item.category.slice(0, 1)} />
             </Col>
           ))}
