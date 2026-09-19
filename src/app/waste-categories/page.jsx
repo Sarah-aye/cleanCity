@@ -10,7 +10,7 @@ import Layout from "../components/Layout";
 export default function WasteCategories() {
   return (
     <Layout>
-      <Container className="py-5 page-shell">
+      <Container className="py-5 page-shell bg-body text-body">
         <div className="section-heading">
           <p className="eyebrow">Waste guide</p>
           <h1>Waste Categories</h1>

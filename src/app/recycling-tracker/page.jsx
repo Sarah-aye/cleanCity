@@ -29,7 +29,7 @@ export default function RecyclingTracker() {
 
   return (
     <Layout>
-      <Container className="py-5 page-shell">
+      <Container className="py-5 page-shell bg-body text-body">
         <div className="section-heading">
           <p className="eyebrow">Your impact</p>
           <h1>Recycling Tracker</h1>

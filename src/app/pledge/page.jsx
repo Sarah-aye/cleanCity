@@ -12,7 +12,7 @@ export default function Pledge() {
 
   return (
     <Layout>
-      <Container className="py-5 page-shell">
+      <Container className="py-5 page-shell bg-body text-body">
         <Row className="g-4 align-items-start">
           <Col lg={5}>
             <div className="section-heading">

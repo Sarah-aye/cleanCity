@@ -19,7 +19,7 @@ export default function Home() {
   const { categoryTotals } = useRecyclingLog();
   return (
     <Layout>
-      <section className="hero-section">
+      <section className="hero-section bg-body text-body">
         <Container>
           <Row className="align-items-center g-4">
             <Col lg={7}>
