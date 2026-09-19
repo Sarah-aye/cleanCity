@@ -12,6 +12,14 @@ The project also includes automated tests using **Jest** and **React Testing Lib
 
 ## Sarah Malwil
 
+### Links
+
+## github https://github.com/Sarah-aye/cleanCity
+
+## live-demo https://clean-city-five.vercel.app/
+
+## GIFs in /public/gifs
+
 ## ✨ Features
 
 ### ♻️ Recycling Tracker
