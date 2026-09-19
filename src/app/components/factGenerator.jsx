@@ -9,7 +9,7 @@ export default function FactGenerator() {
   const { fact, generateFact } = useFactGenerator();
 
   return (
-    <Card className="fact-card border-0 shadow-lg">
+    <Card className="fact-card border-0 shadow-lg bg-body text-body">
       <Card.Body className="p-4 p-md-5">
         <div className="fact-kicker">DID YOU KNOW?</div>
         <p className="h4 mt-3 mb-4">{fact}</p>
