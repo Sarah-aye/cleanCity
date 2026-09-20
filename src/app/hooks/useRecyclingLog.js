@@ -21,23 +21,23 @@ export function useRecyclingLog(initialEntries = []) {
     setLogs((current) => {
       const safeLogs = Array.isArray(current) ? current : [];
 
-      const existingIndex = safeLogs.findIndex(
-        (log) => log.category?.trim().toLowerCase() === targetCategory,
-      );
+      // const existingIndex = safeLogs.findIndex(
+      //   (log) => log.category?.trim().toLowerCase() === targetCategory,
+      // );
 
-      if (existingIndex !== -1) {
-        // Update existing category entry
-        return safeLogs.map((item, index) => {
-          if (index === existingIndex) {
-            return {
-              ...item,
-              quantity: (Number(item.quantity) || 0) + numQty,
-              createdAt: new Date().toISOString(), //  reflect latest log
-            };
-          }
-          return item;
-        });
-      }
+      // if (existingIndex !== -1) {
+      //   // Update existing category entry
+      //   return safeLogs.map((item, index) => {
+      //     if (index === existingIndex) {
+      //       return {
+      //         ...item,
+      //         quantity: (Number(item.quantity) || 0) + numQty,
+      //         createdAt: new Date().toISOString(), //  reflect latest log
+      //       };
+      //     }
+      //     return item;
+      //   });
+      // }
 
       // Append new category entry if it doesn't exist yet
       return [
